@@ -1,6 +1,15 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
+
+// Load .env file
+use Dotenv\Dotenv;
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
+
+
+
 require __DIR__ . '/../src/db.php';
+
 
 use Slim\Factory\AppFactory;
 

@@ -1,9 +1,9 @@
 <?php
 function getPDOConnection() {
-    $host = 'sql12.freesqldatabase.com';
-    $db   = 'sql12751991';
-    $user = 'sql12751991';
-    $pass = 'rBPJDMv5Hx';
+    $host = $_ENV['HOST'];
+    $db   = $_ENV['DB'];
+    $user = $_ENV['USER'];
+    $pass = $_ENV['PASS'];
     $charset = 'utf8mb4';
 
     $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
