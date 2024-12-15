@@ -15,18 +15,28 @@ function getPDOConnection() {
 
     try {
 
-
         $pdo =  new PDO($dsn, $user, $pass, $options);
 
-        $sql = "
-        CREATE TABLE IF NOT EXISTS items (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL
-        );";
+        // $sql = "
+        // CREATE TABLE IF NOT EXISTS items (
+        //     id INT AUTO_INCREMENT PRIMARY KEY,
+        //     name VARCHAR(255) NOT NULL
+        // );";
 
-        
-    // Execute the query
-    $pdo->exec($sql);
+        // $sql = "
+        // CREATE TABLE IF NOT EXISTS users (
+        // id INT AUTO_INCREMENT PRIMARY KEY,
+        // name VARCHAR(255) NOT NULL,
+        // email VARCHAR(255) NOT NULL,
+        // hobby VARCHAR(255) NOT NULL);
+        // ";
+
+        // $sql = "
+        // INSERT INTO users (name, email, hobby) 
+        // VALUES ('Harsh', 'h@gmail.com', 'coding');
+        // ";
+
+    // $pdo->exec($sql);
 
     return $pdo;
     } catch (\PDOException $e) {
