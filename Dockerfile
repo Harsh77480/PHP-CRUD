@@ -1,15 +1,29 @@
-# Base image for the container
+# Use an official PHP image as the base
 FROM php:8.1-cli
 
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy all files from the current directory to the container's /app directory
+# Install dependencies (if needed)
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    unzip \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd
+
+# Install Composer to manage dependencies
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Copy the current directory contents into the container
 COPY . /app
 
-# Expose port 8080 for the application
+# Install the Slim Framework (if not already present)
+RUN composer install
+
+# Expose port 8080 for the app
 EXPOSE 8080
 
-# Run the PHP built-in server to serve your application
-# CMD ["php", "-S", "0.0.0.0:8080", "-t", "."]
-CMD ["php", "-S", "0.0.0.0:8080", "router.php"]
+# Start the PHP built-in server
+CMD ["php", "-S", "0.0.0.0:8080", "public/index.php"]
