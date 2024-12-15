@@ -9,3 +9,6 @@ if (file_exists(__DIR__ . $uri)) {
 
 // Include the routes file
 require __DIR__ . '/src/routes.php';
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
