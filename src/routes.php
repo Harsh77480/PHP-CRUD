@@ -5,7 +5,7 @@ use Slim\App;
 use Illuminate\Database\Capsule\Manager as Capsule; // Add this line
 
 return function (App $app) {
-
+    
     // for cors 
     $app->options('/{routes:.+}', function (Request $request, Response $response) {
         return $response

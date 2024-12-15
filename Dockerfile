@@ -12,4 +12,4 @@ EXPOSE 8080
 
 # Run the PHP built-in server to serve your application
 # CMD ["php", "-S", "0.0.0.0:8080", "-t", "."]
-CMD ["php", "-S", "0.0.0.0:8080", "router.php"]
+CMD ["php", "-S", "0.0.0.0:8080", "public/router.php"]
