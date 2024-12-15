@@ -1,4 +1,8 @@
 <?php
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 // Get the requested URI
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
@@ -9,6 +13,3 @@ if (file_exists(__DIR__ . $uri)) {
 
 // Include the routes file
 require __DIR__ . '/src/routes.php';
-
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
