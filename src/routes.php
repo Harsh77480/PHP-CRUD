@@ -5,16 +5,18 @@ use Slim\App;
 use Illuminate\Database\Capsule\Manager as Capsule; // Add this line
 
 return function (App $app) {
-    
-    // for cors 
-    $app->options('/{routes:.+}', function (Request $request, Response $response) {
-        return $response
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-            ->withHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    });
+
+    // // for cors 
+    // $app->options('/{routes:.+}', function (Request $request, Response $response) {
+    //     return $response
+    //         ->withHeader('Access-Control-Allow-Origin', '*')
+    //         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+    //         ->withHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    // });
 
     $app->get('/items', function (Request $request, Response $response) {
+        error_log("GET /items route hit!");
+        
         $pdo = getPDOConnection();
         $stmt = $pdo->query("SELECT * FROM items");
         $items = $stmt->fetchAll();
