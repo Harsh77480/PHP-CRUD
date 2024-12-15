@@ -27,9 +27,12 @@ function getPDOConnection() {
         
     // Execute the query
     $pdo->exec($sql);
+    
+    echo "Database connected " . $e->getMessage();
 
     return $pdo;
     } catch (\PDOException $e) {
-        throw new \PDOException($e->getMessage(), (int)$e->getCode());
+        echo "Database connection failed: " . $e->getMessage();
+        exit; 
     }
 }
