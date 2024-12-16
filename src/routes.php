@@ -19,21 +19,23 @@ return function (App $app) {
             $stmt = $pdo->query("SELECT id, name FROM users");
             $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
+                
+            $response->getBody()->write(json_encode($users));
             return $response
                 ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200)
-                ->getBody()->write(json_encode($users));
+                ->withStatus(200);
+
         } catch (PDOException $e) {
             error_log($e->getMessage());
+            $response->getBody()->write(json_encode(['error' => 'Internal Server Error']));
             return $response
                 ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500)
-                ->getBody()->write(json_encode(['error' => 'Internal Server Error']));
+                ->withStatus(500);
         }
     });
     
     $app->post('/users', function (Request $request, Response $response) {
-        try {
+        
             $pdo = getPDOConnection();
             $data = json_decode($request->getBody(), true);
     
@@ -47,17 +49,12 @@ return function (App $app) {
             $stmt = $pdo->prepare("INSERT INTO users (name, email, hobby) VALUES (:name, :email, :hobby)");
             $stmt->execute(['name' => $data['name'], 'email' => $data['email'], 'hobby' => $data['hobby']]);
     
+            $response->getBody()->write(json_encode(['status' => 'User added']));
             return $response
                 ->withHeader('Content-Type', 'application/json')
-                ->withStatus(201)
-                ->getBody()->write(json_encode(['status' => 'User added']));
-        } catch (PDOException $e) {
-            error_log($e->getMessage());
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500)
-                ->getBody()->write(json_encode(['error' => 'Internal Server Error']));
-        }
+                ->withStatus(201);
+
+    
     });
     
     $app->put('/users/{id}', function (Request $request, Response $response, $args) {
@@ -81,17 +78,20 @@ return function (App $app) {
                     ->withStatus(404)
                     ->getBody()->write(json_encode(['error' => 'User not found']));
             }
-    
+            
+            $response->getBody()->write(json_encode(['status' => 'User updated']));
+
             return $response
                 ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200)
-                ->getBody()->write(json_encode(['status' => 'User updated']));
+                ->withStatus(200);
+
         } catch (PDOException $e) {
             error_log($e->getMessage());
+            $response->getBody()->write(json_encode(['error' => 'Internal Server Error']));
             return $response
                 ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500)
-                ->getBody()->write(json_encode(['error' => 'Internal Server Error']));
+                ->withStatus(500);
+                
         }
     });
     
@@ -108,16 +108,18 @@ return function (App $app) {
                     ->getBody()->write(json_encode(['error' => 'User not found']));
             }
     
+            $response->getBody()->write(json_encode(['status' => 'User deleted']));
             return $response
                 ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200)
-                ->getBody()->write(json_encode(['status' => 'User deleted']));
+                ->withStatus(200);
+
         } catch (PDOException $e) {
             error_log($e->getMessage());
+            $response->getBody()->write(json_encode(['error' => 'Internal Server Error']));
             return $response
                 ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500)
-                ->getBody()->write(json_encode(['error' => 'Internal Server Error']));
+                ->withStatus(500);
+                
         }
     });
     
@@ -136,19 +138,21 @@ return function (App $app) {
                     ->withStatus(404)
                     ->getBody()->write(json_encode(['error' => 'User not found']));
             }
-    
+            $response->getBody()->write(json_encode($user));
             return $response
                 ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200)
-                ->getBody()->write(json_encode($user));
+                ->withStatus(200);
+                
         } catch (PDOException $e) {
             error_log($e->getMessage());
+            $response->getBody()->write(json_encode(['error' => 'Internal Server Error']));
             return $response
                 ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500)
-                ->getBody()->write(json_encode(['error' => 'Internal Server Error']));
+                ->withStatus(500);
+                
         }
     });
+
     
 };
 
