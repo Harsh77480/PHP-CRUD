@@ -40,10 +40,11 @@ return function (App $app) {
             $data = json_decode($request->getBody(), true);
     
             if (!isset($data['name'], $data['email'], $data['hobby'])) {
+                $response->getBody()->write(json_encode(['error' => 'Invalid input data']));
                 return $response
                     ->withHeader('Content-Type', 'application/json')
-                    ->withStatus(400)
-                    ->getBody()->write(json_encode(['error' => 'Invalid input data']));
+                    ->withStatus(400);
+                    
             }
     
             $stmt = $pdo->prepare("INSERT INTO users (name, email, hobby) VALUES (:name, :email, :hobby)");
@@ -72,11 +73,11 @@ return function (App $app) {
             $stmt = $pdo->prepare("UPDATE users SET name = :name, email = :email, hobby = :hobby WHERE id = :id");
             $stmt->execute(['name' => $data['name'], 'email' => $data['email'], 'hobby' => $data['hobby'], 'id' => $args['id']]);
     
+            $response->getBody()->write(json_encode(['error' => 'User not found']));
             if ($stmt->rowCount() === 0) {
                 return $response
                     ->withHeader('Content-Type', 'application/json')
-                    ->withStatus(404)
-                    ->getBody()->write(json_encode(['error' => 'User not found']));
+                    ->withStatus(404);
             }
             
             $response->getBody()->write(json_encode(['status' => 'User updated']));
@@ -133,10 +134,10 @@ return function (App $app) {
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
             if (!$user) {
+                $response->getBody()->write(json_encode(['error' => 'User not found']));
                 return $response
                     ->withHeader('Content-Type', 'application/json')
-                    ->withStatus(404)
-                    ->getBody()->write(json_encode(['error' => 'User not found']));
+                    ->withStatus(404);
             }
             $response->getBody()->write(json_encode($user));
             return $response
